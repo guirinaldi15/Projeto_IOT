@@ -3,51 +3,41 @@
 namespace App\Livewire\Sensor;
 
 use App\Models\Sensor;
-use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class SensorIndex extends Component
 {
     use WithPagination;
-
+    protected $paginationTheme = 'bootstrap';
     public string $termo = '';
-
     public function updatingTermo(): void
     {
         $this->resetPage();
     }
-
-    public function delete(int $sensorId): void
+    public function excluir(int $id): void
     {
-        $sensor = Sensor::findOrFail($sensorId);
-
-        if ($sensor->registros()->exists()) {
-            session()->flash('error', 'Este sensor possui leituras salvas. O histórico foi preservado e o sensor não pode ser excluído.');
-
+        $item = Sensor::findOrFail($id);
+        if ($item->registros()->exists()) {
+            session()->flash('erro', 'Não é possível excluir: existem dados vinculados.');
             return;
         }
-
-        $sensor->delete();
-        session()->flash('success', 'Sensor removido com sucesso.');
+        $item->delete();
+        session()->flash('sucesso', 'Sensor excluído com sucesso.');
     }
-
-    public function render(): View
+    public function render()
     {
         $sensores = Sensor::query()
-            ->with('ambiente')
-            ->withCount('registros')
+            ->with('ambientes')->withCount('registros')
             ->when($this->termo !== '', function ($query) {
-                $query->where(function ($query) {
-                    $query->where('codigo', 'like', '%'.$this->termo.'%')
-                        ->orWhere('tipo', 'like', '%'.$this->termo.'%')
-                        ->orWhereHas('ambiente', fn ($ambiente) => $ambiente->where('nome', 'like', '%'.$this->termo.'%'));
+                $termo = $this->termo;
+                $query->where(function ($q) use ($termo) {
+                    $q->where('codigo', 'like', '%' . $termo . '%')
+                        ->orWhere('tipo', 'like', '%' . $termo . '%');
+                    $q->orWhereHas('ambientes', fn($a) => $a->where('nome', 'like', '%' . $termo . '%'));
                 });
             })
-            ->orderBy('codigo');
-           // ->paginate(10);
-$sensores = Sensor::all();
+            ->orderByDesc('id')->paginate(10);
         return view('livewire.sensor.sensor-index', compact('sensores'));
     }
 }
-
