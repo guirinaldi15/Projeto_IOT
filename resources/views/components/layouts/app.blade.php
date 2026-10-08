@@ -32,13 +32,13 @@
             <div class="collapse navbar-collapse" id="navbarGlobal">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
                     <li class="nav-item">
-                        <a class="nav-link active px-3" href="/">📊 Dashboard</a>
+                        <a class="nav-link active px-3" href="/dashboard">📊 Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 text-white-50" href="#">🏢 Ambientes</a>
+                        <a class="nav-link px-3 text-white-50" href="ambientes.index">🏢 Ambientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 text-white-50" href="#">🔌 Sensores</a>
+                        <a class="nav-link px-3 text-white-50" href="/sensor/index">🔌 Sensores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3 text-white-50" href="#">📋 Registros</a>

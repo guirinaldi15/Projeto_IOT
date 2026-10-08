@@ -11,7 +11,8 @@ class Ambiente extends Model
     protected $fillable = [
         'nome',
         'descricao',
-        'status'
+        'status',
+        
     ];
 
     public function sensores(){
