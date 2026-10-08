@@ -29,6 +29,6 @@ class AmbienteEdit extends Component
     }
     public function render()
     {
-        return view('livewire.ambientes.form', ['edicao' => true]);
+        return view('livewire.ambiente.ambiente-edit', ['edicao' => true]);
     }
 }

@@ -1,20 +1,14 @@
 <?php
-
 namespace App\Livewire\Sensor;
-
 use App\Models\Sensor;
 use Livewire\Component;
 use Livewire\WithPagination;
-
 class SensorIndex extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public string $termo = '';
-    public function updatingTermo(): void
-    {
-        $this->resetPage();
-    }
+    public function updatingTermo(): void { $this->resetPage(); }
     public function excluir(int $id): void
     {
         $item = Sensor::findOrFail($id);
@@ -32,9 +26,9 @@ class SensorIndex extends Component
             ->when($this->termo !== '', function ($query) {
                 $termo = $this->termo;
                 $query->where(function ($q) use ($termo) {
-                    $q->where('codigo', 'like', '%' . $termo . '%')
-                        ->orWhere('tipo', 'like', '%' . $termo . '%');
-                    $q->orWhereHas('ambientes', fn($a) => $a->where('nome', 'like', '%' . $termo . '%'));
+                    $q->where('codigo', 'like', '%'.$termo.'%')
+                      ->orWhere('tipo','like','%'.$termo.'%');
+                    $q->orWhereHas('ambientes', fn ($a) => $a->where('nome','like','%'.$termo.'%'));
                 });
             })
             ->orderByDesc('id')->paginate(10);
